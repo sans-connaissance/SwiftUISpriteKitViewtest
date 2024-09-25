@@ -6,16 +6,32 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
+    @StateObject private var vm = GameLoaderViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                ForEach(vm.gameScenes, id: \.self) { scene in
+                    NavigationLink {
+                        GameView()
+                            .onAppear(perform: {
+                                vm.deleteGames()
+                                vm.createGames()
+                            })
+                    } label: {
+                        Label("Launch Game !", systemImage: "globe")
+                    }
+                }
+            }
+            .navigationTitle("Jet Pilot Pro")
         }
-        .padding()
+        .onAppear(perform: {
+            vm.deleteGames()
+            vm.createGames()
+        })
     }
 }
 
