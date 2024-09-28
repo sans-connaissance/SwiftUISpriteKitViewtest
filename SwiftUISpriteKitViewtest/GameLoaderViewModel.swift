@@ -7,20 +7,23 @@
 
 import SwiftUI
 import SpriteKit
+import GameplayKit
 
 class GameLoaderViewModel: ObservableObject {
-    @Published var gameScenes: [SKScene] = []
+    @Published var gameScenes: [GKScene] = []
     
     func deleteGames() {
         self.gameScenes.removeAll()
     }
     
     func createGames() {
-        let gameOne = SKScene()
-        gameScenes.append(gameOne)
+
+        if let scene = GKScene(fileNamed: "GameScene") {
+            self.gameScenes.append(scene)
+        }
         
-        let gameTwo = SKScene()
-        gameScenes.append(gameTwo)
-        
+        if let scene2 = GKScene(fileNamed: "GameScene2") {
+            self.gameScenes.append(scene2)
+        }
     }
 }

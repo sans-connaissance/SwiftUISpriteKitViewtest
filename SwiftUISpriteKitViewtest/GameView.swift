@@ -7,9 +7,11 @@
 
 import SwiftUI
 import SpriteKit
+import GameplayKit
 
 struct GameView: View {
     @StateObject private var vm = GameViewModel()
+    let gkScene: GKScene
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -20,7 +22,8 @@ struct GameView: View {
             }
         }
         .onAppear {
-            vm.loadBlankView()
+            vm.emptySpriteView()
+            vm.loadSpriteView(with: gkScene)
         }
     }
 }

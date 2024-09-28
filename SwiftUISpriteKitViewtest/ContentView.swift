@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SpriteKit
+import GameplayKit
 
 struct ContentView: View {
     @StateObject private var vm = GameLoaderViewModel()
@@ -16,11 +17,11 @@ struct ContentView: View {
             VStack {
                 ForEach(vm.gameScenes, id: \.self) { scene in
                     NavigationLink {
-                        GameView()
-                            .onAppear(perform: {
+                        GameView(gkScene: scene)
+                            .onDisappear {
                                 vm.deleteGames()
                                 vm.createGames()
-                            })
+                            }
                     } label: {
                         Label("Launch Game !", systemImage: "globe")
                     }
@@ -29,7 +30,6 @@ struct ContentView: View {
             .navigationTitle("Jet Pilot Pro")
         }
         .onAppear(perform: {
-            vm.deleteGames()
             vm.createGames()
         })
     }
