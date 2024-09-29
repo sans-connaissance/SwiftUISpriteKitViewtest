@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 struct GameView: View {
-    @StateObject private var vm = GameViewModel()
+    @State private var vm = GameViewModel()
     let gkScene: GKScene
     var body: some View {
         GeometryReader { geometry in

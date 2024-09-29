@@ -9,9 +9,10 @@ import SwiftUI
 import SpriteKit
 import GameplayKit
 
-class GameViewModel: ObservableObject {
+@Observable
+class GameViewModel {
 
-    @Published var spriteView: SpriteView?
+    var spriteView: SpriteView?
     
     func emptySpriteView() {
         self.spriteView = nil

@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 struct ContentView: View {
-    @StateObject private var vm = GameLoaderViewModel()
+    @State private var vm = GameLoaderViewModel()
     
     var body: some View {
         NavigationStack {

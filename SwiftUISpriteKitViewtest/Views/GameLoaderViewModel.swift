@@ -9,8 +9,9 @@ import SwiftUI
 import SpriteKit
 import GameplayKit
 
-class GameLoaderViewModel: ObservableObject {
-    @Published var gameScenes: [GKScene] = []
+@Observable
+class GameLoaderViewModel {
+    var gameScenes: [GKScene] = []
     
     func deleteGames() {
         self.gameScenes.removeAll()
