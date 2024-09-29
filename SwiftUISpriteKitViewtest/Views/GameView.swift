@@ -10,7 +10,6 @@ import SpriteKit
 import GameplayKit
 
 struct GameView: View {
-    @Binding var path: NavigationPath
     @State private var vm = GameViewModel()
     
     let gkScene: GKScene
@@ -27,7 +26,7 @@ struct GameView: View {
             }
         }
         .navigationDestination(for: GKScene.self) { scene in
-            GameView(path: $path, gkScene: scene)
+            GameView(gkScene: scene)
                 .onDisappear {
                     vm.resetVM()
                     vm.loadSpriteView(with: gkScene)
@@ -36,11 +35,6 @@ struct GameView: View {
         .onAppear {
             vm.resetVM()
             vm.loadSpriteView(with: gkScene)
-        }
-        .toolbar {
-            Button("Home") {
-                path = NavigationPath()
-            }
         }
     }
 }
