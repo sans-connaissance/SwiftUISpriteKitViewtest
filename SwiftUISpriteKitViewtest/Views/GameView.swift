@@ -10,7 +10,9 @@ import SpriteKit
 import GameplayKit
 
 struct GameView: View {
+    @Binding var path: NavigationPath
     @State private var vm = GameViewModel()
+    
     let gkScene: GKScene
     var body: some View {
         GeometryReader { geometry in
@@ -19,11 +21,26 @@ struct GameView: View {
                     spriteView
                         .frame(width: geometry.size.width, height: geometry.size.height)
                 }
+                if let scene = vm.loadedScene {
+                    NavigationLink("restart Game", value: scene)
+                }
             }
         }
+        .navigationDestination(for: GKScene.self) { scene in
+            GameView(path: $path, gkScene: scene)
+                .onDisappear {
+                    vm.resetVM()
+                    vm.loadSpriteView(with: gkScene)
+                }
+        }
         .onAppear {
-            vm.emptySpriteView()
+            vm.resetVM()
             vm.loadSpriteView(with: gkScene)
+        }
+        .toolbar {
+            Button("Home") {
+                path = NavigationPath()
+            }
         }
     }
 }

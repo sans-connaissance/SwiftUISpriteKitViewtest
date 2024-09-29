@@ -13,9 +13,11 @@ import GameplayKit
 class GameViewModel {
 
     var spriteView: SpriteView?
+    var loadedScene: GKScene?
     
-    func emptySpriteView() {
+    func resetVM() {
         self.spriteView = nil
+        self.loadedScene = nil
     }
     
     func loadSpriteView(with scene: GKScene) {
@@ -37,6 +39,8 @@ class GameViewModel {
                 debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
             )
             self.spriteView = sView
+            self.loadedScene = scene
+            
         } else if let sceneNode = scene.rootNode as? GameScene2?, let _scene = sceneNode {
             // Copy gameplay related content over to the scene
             _scene.entities = scene.entities
@@ -53,6 +57,7 @@ class GameViewModel {
                 debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
             )
             self.spriteView = sView
+            self.loadedScene = scene
         }
     }
 }
