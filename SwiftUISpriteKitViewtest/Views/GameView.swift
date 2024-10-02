@@ -17,7 +17,7 @@ struct GameView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 0) {
                 
-                ForEach(vm.gameScenes, id: \.self) { scene in
+                ForEach(vm.skScenes, id: \.self) { scene in
                     SpriteView(
                         scene: scene,
                         isPaused: false,

@@ -11,12 +11,10 @@ import GameplayKit
 
 @Observable
 class GameViewModel {
-    var gameScenes: [GameScene] = []
-    var gameScene2s: [GameScene2] = []
+    var skScenes: [SKScene] = []
     
     func resetVM() {
-        self.gameScenes.removeAll()
-        self.gameScene2s.removeAll()
+        self.skScenes.removeAll()
     }
     
     func createGKScenes(with title: String) {
@@ -37,8 +35,7 @@ class GameViewModel {
             
             // Set the scale mode to scale to fit the window
             _scene.scaleMode = .aspectFill
-            
-            gameScenes.append(_scene)
+            skScenes.append(_scene)
             
         } else if let sceneNode = scene.rootNode as? GameScene2?, let _scene = sceneNode {
             // Copy gameplay related content over to the scene
@@ -47,8 +44,7 @@ class GameViewModel {
             
             // Set the scale mode to scale to fit the window
             _scene.scaleMode = .aspectFill
-            
-            gameScene2s.append(_scene)
+            skScenes.append(_scene)
         }
     }
 }
