@@ -11,11 +11,12 @@ import GameplayKit
 
 struct GameView: View {
     @State private var vm = GameViewModel()
-    let gkScenes: [GKScene]
+    let levelTitle: String
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 0) {
+                
                 ForEach(vm.gameScenes, id: \.self) { scene in
                     SpriteView(
                         scene: scene,
@@ -39,7 +40,7 @@ struct GameView: View {
         .scrollBounceBehavior(.basedOnSize)
         .onAppear {
           //  vm.resetVM()
-            vm.loadSpriteView(with: gkScenes)
+            vm.createGKScenes(with: levelTitle)
         }
     }
 }

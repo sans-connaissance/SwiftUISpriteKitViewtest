@@ -10,27 +10,27 @@ import SpriteKit
 import GameplayKit
 
 struct ContentView: View {
-    @State private var vm = GameLoaderViewModel()
-    @State private var path = [[GKScene]]()
+    @State private var vm = HomeViewModel()
+    @State private var path = [String]()
     
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
-                ForEach(vm.gameScenes, id: \.self) { scenes in
+                ForEach(vm.levelTitles, id: \.self) { title in
                     Button {
-                        path = [scenes]
+                        path = [title]
                     } label: {
                         Text("select game")
                     }
                 }
-                .navigationDestination(for: [GKScene].self) { scenes in
-                    GameView(gkScenes: scenes)
+                .navigationDestination(for: String.self) { title in
+                    GameView(levelTitle: title)
                 }
             }
             .navigationTitle("Jet Pilot Pro")
         }
         .onAppear(perform: {
-            vm.createGames()
+            vm.loadLevelTitles()
         })
     }
 }
