@@ -11,30 +11,41 @@ import GameplayKit
 
 struct GameView: View {
     @State private var vm = GameViewModel()
+    let gkScenes: [GKScene]
     
-    let gkScene: GKScene
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                if let spriteView = vm.spriteView {
-                    spriteView
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                }
-                if let scene = vm.loadedScene {
-                    NavigationLink("restart Game", value: scene)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 0) {
+                ForEach(vm.gameScenes, id: \.self) { scene in
+                    SpriteView(
+                        scene: scene,
+                        isPaused: false,
+                        preferredFramesPerSecond: 120,
+                        options: [.ignoresSiblingOrder, .shouldCullNonVisibleNodes],
+                        debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
+                    )
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
+                    .containerRelativeFrame(.horizontal, alignment: .center)
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0)
+                    }
                 }
             }
         }
-        .navigationDestination(for: GKScene.self) { scene in
-            GameView(gkScene: scene)
-                .onDisappear {
-                    vm.resetVM()
-                    vm.loadSpriteView(with: gkScene)
-                }
-        }
+        .ignoresSafeArea()
+        .scrollTargetLayout()
+        .scrollTargetBehavior(.paging)
+        .scrollBounceBehavior(.basedOnSize)
         .onAppear {
-            vm.resetVM()
-            vm.loadSpriteView(with: gkScene)
+          //  vm.resetVM()
+            vm.loadSpriteView(with: gkScenes)
         }
     }
+}
+
+extension UIScreen{
+   static let screenWidth = UIScreen.main.bounds.size.width
+   static let screenHeight = UIScreen.main.bounds.size.height
+   static let screenSize = UIScreen.main.bounds.size
 }

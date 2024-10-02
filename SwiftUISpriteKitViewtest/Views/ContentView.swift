@@ -11,24 +11,20 @@ import GameplayKit
 
 struct ContentView: View {
     @State private var vm = GameLoaderViewModel()
-    @State private var path = [GKScene]()
+    @State private var path = [[GKScene]]()
     
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
-                ForEach(vm.gameScenes, id: \.self) { scene in
+                ForEach(vm.gameScenes, id: \.self) { scenes in
                     Button {
-                        path = [scene, scene]
+                        path = [scenes]
                     } label: {
                         Text("select game")
                     }
                 }
-                .navigationDestination(for: GKScene.self) { scene in
-                    GameView(gkScene: scene)
-                        .onDisappear {
-                            vm.deleteGames()
-                            vm.createGames()
-                        }
+                .navigationDestination(for: [GKScene].self) { scenes in
+                    GameView(gkScenes: scenes)
                 }
             }
             .navigationTitle("Jet Pilot Pro")

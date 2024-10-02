@@ -11,53 +11,38 @@ import GameplayKit
 
 @Observable
 class GameViewModel {
-
-    var spriteView: SpriteView?
-    var loadedScene: GKScene?
+    var gameScenes: [GameScene] = []
+    var gameScene2s: [GameScene2] = []
     
     func resetVM() {
-        self.spriteView = nil
-        self.loadedScene = nil
+        self.gameScenes.removeAll()
+        self.gameScene2s.removeAll()
     }
     
-    func loadSpriteView(with scene: GKScene) {
-        // Get the SKScene from the loaded GKScene
-        if let sceneNode = scene.rootNode as? GameScene?, let _scene = sceneNode {
-            
-            // Copy gameplay related content over to the scene
-            _scene.entities = scene.entities
-            _scene.graphs = scene.graphs
-            
-            // Set the scale mode to scale to fit the window
-            _scene.scaleMode = .aspectFill
-            
-            let sView = SpriteView(
-                scene: _scene,
-                isPaused: false,
-                preferredFramesPerSecond: 120,
-                options: [.ignoresSiblingOrder, .shouldCullNonVisibleNodes],
-                debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
-            )
-            self.spriteView = sView
-            self.loadedScene = scene
-            
-        } else if let sceneNode = scene.rootNode as? GameScene2?, let _scene = sceneNode {
-            // Copy gameplay related content over to the scene
-            _scene.entities = scene.entities
-            _scene.graphs = scene.graphs
-            
-            // Set the scale mode to scale to fit the window
-            _scene.scaleMode = .aspectFill
-            
-            let sView = SpriteView(
-                scene: _scene,
-                isPaused: false,
-                preferredFramesPerSecond: 120,
-                options: [.ignoresSiblingOrder, .shouldCullNonVisibleNodes],
-                debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
-            )
-            self.spriteView = sView
-            self.loadedScene = scene
+    func loadSpriteView(with scenes: [GKScene]) {
+        for scene in scenes {
+            // Get the SKScene from the loaded GKScene
+            if let sceneNode = scene.rootNode as? GameScene?, let _scene = sceneNode {
+                
+                // Copy gameplay related content over to the scene
+                _scene.entities = scene.entities
+                _scene.graphs = scene.graphs
+                
+                // Set the scale mode to scale to fit the window
+                _scene.scaleMode = .aspectFill
+                
+                gameScenes.append(_scene)
+                
+            } else if let sceneNode = scene.rootNode as? GameScene2?, let _scene = sceneNode {
+                // Copy gameplay related content over to the scene
+                _scene.entities = scene.entities
+                _scene.graphs = scene.graphs
+                
+                // Set the scale mode to scale to fit the window
+                _scene.scaleMode = .aspectFill
+                
+                gameScene2s.append(_scene)
+            }
         }
     }
 }
