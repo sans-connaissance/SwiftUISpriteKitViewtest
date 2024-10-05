@@ -1,0 +1,33 @@
+//
+//  SpriteGameView.swift
+//  SwiftUISpriteKitViewtest
+//
+//  Created by David Malicke on 10/5/24.
+//
+
+import SwiftUI
+import SpriteKit
+
+struct SpriteGameView: View {
+    @Binding var vm: GameViewModel
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(vm.skScenes, id: \.self) { scene in
+                SpriteView(
+                    scene: scene,
+                    isPaused: false,
+                    preferredFramesPerSecond: 120,
+                    options: [.ignoresSiblingOrder, .shouldCullNonVisibleNodes],
+                    debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
+                )
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
+                .containerRelativeFrame(.horizontal, alignment: .center)
+                .scrollTransition { content, phase in
+                    content
+                        .opacity(phase.isIdentity ? 1 : 0)
+                }
+            }
+        }
+    }
+}

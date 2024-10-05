@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SpriteKit
-import GameplayKit
 
 struct GameView: View {
     @State private var vm = GameViewModel()
@@ -17,23 +16,7 @@ struct GameView: View {
     var body: some View {
         ZStack(alignment: .top) {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0) {
-                    ForEach(vm.skScenes, id: \.self) { scene in
-                        SpriteView(
-                            scene: scene,
-                            isPaused: false,
-                            preferredFramesPerSecond: 120,
-                            options: [.ignoresSiblingOrder, .shouldCullNonVisibleNodes],
-                            debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics]
-                        )
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight)
-                        .containerRelativeFrame(.horizontal, alignment: .center)
-                        .scrollTransition { content, phase in
-                            content
-                                .opacity(phase.isIdentity ? 1 : 0)
-                        }
-                    }
-                }
+                SpriteGameView(vm: $vm)
             }
             .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
                 isLocked = true
