@@ -13,6 +13,8 @@ class GameScene: SKScene {
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
+    var gameScore = ScoreViewModel.shared
+    
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
@@ -69,6 +71,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let label = self.label {
+            self.gameScore.score += 1
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
         }
         

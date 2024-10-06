@@ -11,12 +11,17 @@ import SpriteKit
 struct GameView: View {
     @State private var vm = GameViewModel()
     @State private var isLocked: Bool = true
+    @State private var score: Int = 0
     let levelTitle: String
     
     var body: some View {
         ZStack(alignment: .top) {
             ScrollView(.horizontal, showsIndicators: false) {
-                SpriteGameView(vm: $vm)
+                HStack(spacing: 0) {
+                    ForEach(vm.skScenes, id: \.self) { scene in
+                        SpriteGameView(scene: scene, score: $score)
+                    }
+                }
             }
             .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
                 isLocked = true
@@ -36,13 +41,14 @@ struct GameView: View {
             VStack {
                 HStack {
                     Text("Hello World")
-                        .foregroundStyle(.white)
+                    Text("Score: \(score)")
                     Button {
                         isLocked.toggle()
                     } label: {
                         Text("Unlock Screen")
                     }
                 }
+                .foregroundStyle(.white)
             }
             .padding(.top, 80)
         }
