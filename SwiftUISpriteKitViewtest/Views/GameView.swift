@@ -9,9 +9,9 @@ import SwiftUI
 import SpriteKit
 
 struct GameView: View {
+    @Environment(GameData.self) var gameData
     @State private var vm = GameViewModel()
     @State private var isLocked: Bool = true
-    @State private var score: Int = 0
     let levelTitle: String
     
     var body: some View {
@@ -19,12 +19,14 @@ struct GameView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     ForEach(vm.skScenes, id: \.self) { scene in
-                        SpriteGameView(scene: scene, score: $score)
+                        SpriteGameView(scene: scene)
                     }
                 }
             }
             .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
                 isLocked = true
+                gameData.resetScore()
+                
             }) : nil)
             .scrollDisabled(isLocked)
             .ignoresSafeArea()
@@ -35,13 +37,14 @@ struct GameView: View {
                 vm.createGKScenes(with: levelTitle)
             }
             .onDisappear {
+                gameData.resetScore()
                 vm.resetVM()
             }
             
             VStack {
                 HStack {
                     Text("Hello World")
-                    Text("Score: \(score)")
+                    Text("Score: \(gameData.score)")
                     Button {
                         isLocked.toggle()
                     } label: {

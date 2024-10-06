@@ -10,8 +10,6 @@ import SpriteKit
 
 struct SpriteGameView: View {
     let scene: SKScene
-    @Binding var score: Int
-    var gameScore = ScoreViewModel.shared.score
     
     var body: some View {
         SpriteView(
@@ -27,21 +25,5 @@ struct SpriteGameView: View {
             content
                 .opacity(phase.isIdentity ? 1 : 0)
         }
-        .onChange(of: gameScore) {
-            score = gameScore
-        }
     }
 }
-
-@Observable
-class ScoreViewModel {
-    static let shared: ScoreViewModel = ScoreViewModel()
-    
-    var score = 0
-    
-    func resetScore() {
-        score = 0
-    }
-}
-
-
