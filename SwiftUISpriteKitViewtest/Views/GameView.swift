@@ -13,6 +13,7 @@ struct GameView: View {
     @State private var vm = GameViewModel()
     @State private var isLocked: Bool = true
     let levelTitle: String
+    var hideLabel: Bool
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -25,7 +26,10 @@ struct GameView: View {
             }
             .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
                 isLocked = true
+                gameData.hideLabel.toggle()
                 gameData.resetScore()
+                vm.resetVM()
+                vm.createGKScenes(with: levelTitle)
                 
             }) : nil)
             .scrollDisabled(isLocked)
@@ -34,6 +38,7 @@ struct GameView: View {
             .scrollTargetBehavior(.paging)
             .scrollBounceBehavior(.basedOnSize)
             .onAppear {
+                gameData.hideLabel = hideLabel
                 vm.createGKScenes(with: levelTitle)
             }
             .onDisappear {

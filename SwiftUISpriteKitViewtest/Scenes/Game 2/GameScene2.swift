@@ -12,6 +12,7 @@ class GameScene2: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
+    var gameData = GameData.shared
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
@@ -25,6 +26,9 @@ class GameScene2: SKScene {
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel1") as? SKLabelNode
         if let label = self.label {
+            if gameData.hideLabel {
+                label.isHidden = true
+            }
             label.alpha = 0.0
             label.run(SKAction.fadeIn(withDuration: 2.0))
         }

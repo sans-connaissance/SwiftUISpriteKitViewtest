@@ -13,6 +13,7 @@ class GameData {
     static let shared: GameData = GameData()
     
     var score = 0
+    var hideLabel = false
     
     func resetScore() {
         score = 0

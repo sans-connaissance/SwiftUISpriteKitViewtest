@@ -12,7 +12,6 @@ class GameScene: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
-
     var gameData = GameData.shared
     
     private var lastUpdateTime : TimeInterval = 0

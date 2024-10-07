@@ -24,7 +24,7 @@ struct ContentView: View {
                     }
                 }
                 .navigationDestination(for: String.self) { title in
-                    GameView(levelTitle: title)
+                    GameView(levelTitle: title, hideLabel: false)
                 }
             }
             .navigationTitle("Jet Pilot Pro")
