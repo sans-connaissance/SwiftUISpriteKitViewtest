@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 @Observable
-class GameViewModel {
+class GameContainerViewModel {
     var skScenes: [SKScene] = []
     
     func resetVM() {
