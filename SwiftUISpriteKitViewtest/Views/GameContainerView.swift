@@ -17,11 +17,9 @@ struct GameContainerView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0) {
-                    ForEach(vm.skScenes, id: \.self) { scene in
-                        GameView(scene: scene)
-                    }
+            GameCarouselView {
+                ForEach(vm.skScenes, id: \.self) { scene in
+                    GameView(scene: scene)
                 }
             }
             .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
@@ -31,7 +29,7 @@ struct GameContainerView: View {
                 vm.resetVM()
                 vm.createGKScenes(with: levelTitle)
             }) : nil)
-            
+    
             .scrollDisabled(isLocked)
             .ignoresSafeArea()
             .scrollTargetLayout()
@@ -41,6 +39,7 @@ struct GameContainerView: View {
                 gameData.hideLabel = hideLabel
                 vm.createGKScenes(with: levelTitle)
             }
+            
             .onDisappear {
                 gameData.resetScore()
                 vm.resetVM()
