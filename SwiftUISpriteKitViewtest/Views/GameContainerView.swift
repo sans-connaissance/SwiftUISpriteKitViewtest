@@ -12,35 +12,18 @@ struct GameContainerView: View {
     @Environment(GameData.self) var gameData
     @State private var vm = GameContainerViewModel()
     @State private var isLocked: Bool = true
+    @State private var id = UUID()
     let levelTitle: String
-    var hideLabel: Bool
     
     var body: some View {
         ZStack(alignment: .top) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0) {
-                    ForEach(vm.skScenes, id: \.self) { scene in
-                        GameView(scene: scene)
-                    }
-                }
-            }
-            .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
-                isLocked = true
-                gameData.hideLabel.toggle()
-                gameData.resetScore()
-                vm.resetVM()
-                vm.createGKScenes(with: levelTitle)
-            }) : nil)
-            
-            .scrollDisabled(isLocked)
-            .ignoresSafeArea()
-            .scrollTargetLayout()
-            .scrollTargetBehavior(.paging)
-            .scrollBounceBehavior(.basedOnSize)
+            GameScrollView(vm: $vm, isLocked: $isLocked, id: $id, levelTitle: levelTitle)
+                .id(id)
+
             .onAppear {
-                gameData.hideLabel = hideLabel
                 vm.createGKScenes(with: levelTitle)
             }
+            
             .onDisappear {
                 gameData.resetScore()
                 vm.resetVM()
@@ -59,6 +42,41 @@ struct GameContainerView: View {
                 .foregroundStyle(.white)
             }
             .padding(.top, 80)
+        }
+    }
+}
+
+struct GameScrollView: View {
+    @Environment(GameData.self) var gameData
+    @Binding var vm: GameContainerViewModel
+    @Binding var isLocked: Bool
+    @Binding var id: UUID
+    let levelTitle: String
+    
+    var body: some View {
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(vm.skScenes, id: \.self) { scene in
+                        GameView(scene: scene)
+                    }
+                }
+            }
+            .defaultScrollAnchor(.trailing)
+            
+            .simultaneousGesture(!isLocked ? DragGesture().onEnded({ _ in
+                isLocked = true
+                gameData.resetScore()
+                vm.resetVM()
+                vm.createGKScenes(with: levelTitle)
+                id = UUID()
+            }) : nil)
+            
+            .scrollDisabled(isLocked)
+            .ignoresSafeArea()
+            .scrollTargetLayout()
+            .scrollTargetBehavior(.paging)
+            .scrollBounceBehavior(.basedOnSize)
         }
     }
 }
